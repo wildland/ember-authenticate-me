@@ -6,11 +6,7 @@ export default Ember.Route.extend({
         self = this;
 
     if (isAuthenticated) {
-      this.get('session.content.currentUser.lastOrganizationContext').then(function(defaultOrg) {
-        self.transitionTo('organization.items', defaultOrg);
-      }, function(/* error */) {
-        self.transitionTo('request-to-join-organizations');
-      });
+      self.transitionTo('/');
     }
   },
 

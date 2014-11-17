@@ -1,8 +1,11 @@
 import Ember from 'ember';
 
+// TODO: Look this up from the ENV and default to '/api/session' if it doesn't exist.
+var SESSION_URI = '/api/session';
+
 function _ajaxOptions(authorizaton) {
   return {
-    url: '/api/v1/session',
+    url: SESSION_URI,
     data: JSON.stringify(authorizaton),
     type: 'POST',
     dataType: 'json',
@@ -57,7 +60,7 @@ export default Ember.Object.extend({
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       Ember.$.ajax({
-        url: '/api/v1/session',
+        url: SESSION_URI,
         type: 'DELETE',
         dataType: 'json',
         contentType: 'application/json',
@@ -80,7 +83,7 @@ export default Ember.Object.extend({
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       Ember.$.ajax({
-        url: '/api/v1/session',
+        url: SESSION_URI,
         type: 'GET',
         dataType: 'json',
         contentType: 'application/json',

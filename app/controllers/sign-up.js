@@ -45,12 +45,12 @@ export default Ember.ObjectController.extend({
         };
 
     this.get('session').open('traditional-authentication', authenticationParams).then(function() {
-        self.transitionTo('home');
+        self.transitionTo('/');
     }, function(error) {
       console.log("Error authenticating new user: ", error);
 
       // Transitioning to home will redirect to login
-      self.transitionTo('home');
+      self.transitionTo('/');
     });
   },
 
