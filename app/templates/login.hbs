@@ -9,7 +9,7 @@
     {{input type="text" name="username" placeholder="Username" value=username}}
     {{input type="password" name="password" placeholder="Password" value=password}}
     <div class="help">
-      {{!-- {{#link-to 'password-reset' class="password-reset"}}Forget Password?{{/link-to}} --}}
+      {{#link-to 'forgot-password' class="forgot-password"}}Forget Password?{{/link-to}}
       {{#link-to 'sign-up' class="signup"}}Sign Up{{/link-to}}
     </div><!--
  -->{{#if isProcessing}}<button class="submit button" disabled=true>Loading...</button>{{else}}<button class="submit button" {{action 'logIn'}}>Log In</button>{{/if}}
