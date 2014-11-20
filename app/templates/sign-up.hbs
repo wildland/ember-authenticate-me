@@ -15,6 +15,15 @@
       </div>
     {{/if}}
 
+    {{input type="text" name="email" placeholder="Email" value=email}}
+    {{#if errors.email}}
+      <div class="error">
+      {{#each errors.email}}
+          <span>{{message}}</span>
+      {{/each}}
+      </div>
+    {{/if}}
+
     {{input type="password" name="password" placeholder="Password" value=password}}
     {{#if errors.password}}
       <div class="error">
@@ -28,33 +37,6 @@
     {{#if errors.passwordConfirmation}}
       <div class="error">
       {{#each errors.passwordConfirmation}}
-          <span>{{message}}</span>
-      {{/each}}
-      </div>
-    {{/if}}
-
-    {{input type="text" name="email" placeholder="Email" value=email}}
-    {{#if errors.email}}
-      <div class="error">
-      {{#each errors.email}}
-          <span>{{message}}</span>
-      {{/each}}
-      </div>
-    {{/if}}
-
-    {{input type="text" name="first_name" placeholder="First Name" value=firstName}}
-    {{#if errors.firstName}}
-      <div class="error">
-      {{#each errors.firstName}}
-          <span>{{message}}</span>
-      {{/each}}
-      </div>
-    {{/if}}
-
-    {{input type="text" name="last_name" placeholder="Last Name" value=lastName}}
-    {{#if errors.lastName}}
-      <div class="error">
-      {{#each errors.lastName}}
           <span>{{message}}</span>
       {{/each}}
       </div>
