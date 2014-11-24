@@ -1,5 +1,6 @@
 import AuthenticatedAdapter from 'ember-authenticate-me/adapters/authenticated';
+import ENV from '../config/environment';
 
 export default AuthenticatedAdapter.extend({
-  namespace: 'api/v1'
+  namespace: ENV.apiNamespace || 'api/v1'
 });
