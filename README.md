@@ -8,6 +8,22 @@ This README outlines the details of collaborating on this Ember addon.
 * `npm install`
 * `bower install`
 
+Add the following to your `app/router.js`:
+````js
+...
+
+import AddRoutes from 'ember-authenticate-me/add-routes';
+
+...
+
+Router.map(function() {
+  AddRoutes(this);
+});
+
+...
+````
+
+
 ## Running
 
 * `ember server`
