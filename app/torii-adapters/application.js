@@ -1,7 +1,7 @@
 import Ember from 'ember';
+import ENV from '../config/environment';
 
-// TODO: Look this up from the ENV and default to '/api/session' if it doesn't exist.
-var SESSION_URI = '/api/session';
+var SESSION_URI = ENV.emberAuthenticateMe.sessionUri || '/api/session';
 
 function _ajaxOptions(authorizaton) {
   return {

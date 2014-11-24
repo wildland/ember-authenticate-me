@@ -1,4 +1,7 @@
 import Ember from 'ember';
+import ENV from '../config/environment';
+
+var PASSWORD_RESET_URI = ENV.emberAuthenticateMe.passwordResetUri || '/api/password_resets';
 
 export default Ember.ObjectController.extend({
   password: null,
@@ -35,7 +38,8 @@ export default Ember.ObjectController.extend({
       if (!error) {
         Ember.$.ajax({
           type: "PUT",
-          url: '/api/password_resets/' + this.get('token'),
+          url: [PASSWORD_RESET_URI, this.get('token')].join('/'),
+
           data: {
             password: this.get('password'),
             password_confirmation: this.get('password_confirmation')
