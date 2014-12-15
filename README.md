@@ -1,41 +1,35 @@
 # Ember-authenticate-me
 
-This README outlines the details of collaborating on this Ember addon.
+This addon hooks torii up to work out of the box with the Rails gem [token-authenticate-me](https://github.com/inigo-llc/token_authenticate_me) and includes some default templates, routes, and controllers.
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+* `npm install --save-dev ember-authenticate-me`
+* `ember g ember-authenticate-me`
+* `ember g user`
 
-Add the following to your `app/router.js`:
+app/router.js:
 ````js
-...
 
-import AddRoutes from 'ember-authenticate-me/add-routes';
+import Ember from 'ember';
+import config from './config/environment';
+import addRoutes from 'ember-authenticate-me/add-routes';
 
-...
-
-Router.map(function() {
-  AddRoutes(this);
+var Router = Ember.Router.extend({
+  location: config.locationType
 });
 
-...
+Router.map(function() {
+  ...
+  addRoutes(this);
+});
+
+export default Router;
+
+
 ````
 
-
-## Running
-
-* `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
+## TODO:
+ - [ ] Automatically inject addRoutes into the router in generator.
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).

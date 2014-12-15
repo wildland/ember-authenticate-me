@@ -45,7 +45,8 @@ export default Ember.Object.extend({
 
       return {
         token: params.session.key,
-        expiration: params.session.expiration
+        expiration: params.session.expiration,
+        currentUser: params.session.user
       };
     });
   },
