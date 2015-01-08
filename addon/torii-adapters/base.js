@@ -23,6 +23,14 @@ export default Ember.Object.extend({
     return jqXHR;
   },
 
+  _storeCurrentUser: function(userPayload) {
+    var store = this.container.lookup('store:main');
+
+    store.pushPayload('user', { user: userPayload });
+
+    return store.find('user', userPayload.id);
+  },
+
   open: function(authorizaton) {
     var self = this,
     hash = this._ajaxOptions(authorizaton);
@@ -43,11 +51,13 @@ export default Ember.Object.extend({
       session.set('content', { token: params.session.key });
       self.set('token', params.session.key);
 
-      return {
-        token: params.session.key,
-        expiration: params.session.expiration,
-        currentUser: params.session.user
-      };
+      return self._storeCurrentUser(params.session.user).then(function(currentUser) {
+        return {
+          token: params.session.key,
+          expiration: params.session.expiration,
+          currentUser: currentUser
+        };
+      });
     });
   },
 
