@@ -33,7 +33,7 @@ export default Ember.Object.extend({
 
   open: function(authorizaton) {
     var self = this,
-    hash = this._ajaxOptions(authorizaton);
+        hash = this._ajaxOptions(authorizaton);
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       hash.success = function(json/*, textStatus, jqXHR*/) {
@@ -41,7 +41,7 @@ export default Ember.Object.extend({
       };
 
       hash.error = function(jqXHR/*, textStatus, errorThrown*/) {
-        Ember.run(null, reject, this._ajaxError(jqXHR, jqXHR.responseText));
+        Ember.run(null, reject, self._ajaxError(jqXHR, jqXHR.responseText));
       };
 
       Ember.$.ajax(hash);
@@ -49,7 +49,13 @@ export default Ember.Object.extend({
       var session = self.container.lookup('torii:session');
 
       session.set('content', { token: params.session.key });
-      self.set('token', params.session.key);
+
+      if (window.localStorage) {
+        window.localStorage.setItem('eam-token', params.session.key);
+      }
+      else {
+        self.set('token', params.session.key);
+      }
 
       return self._storeCurrentUser(params.session.user).then(function(currentUser) {
         return {
@@ -65,12 +71,19 @@ export default Ember.Object.extend({
   * This method destroys/unauthenticates the existing session with the server.
   **/
   close: function() {
-    //TODO: Lookup token via local storage, and query the server using the token.
-    var token = this.get('token');
+    var token = null,
+        self  = this;
+
+    if (window.localStorage) {
+      token = window.localStorage.getItem('eam-token');
+    }
+    else {
+      token = self.get('token');
+    }
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       Ember.$.ajax({
-        url: this.get('sessionUri'),
+        url: self.get('sessionUri'),
         type: 'DELETE',
         dataType: 'json',
         contentType: 'application/json',
@@ -88,21 +101,49 @@ export default Ember.Object.extend({
   * and then verifying that it is valid.
   **/
   fetch: function() {
-    //TODO: Lookup token via local storage, query the server using the token, and return the session
-    var token = this.get('token');
+    var self  = this,
+        token = null;
 
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      Ember.$.ajax({
+    if (window.localStorage) {
+      token = window.localStorage.getItem('eam-token');
+    }
+
+    if (token) {
+      var hash = {
         url: this.get('sessionUri'),
         type: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-        headers: { Authorization: 'Token token=' + token },
-        success: Ember.run.bind(null, resolve),
-        error: Ember.run.bind(null, reject)
-      }).then(function(data) {
-        return data;
+          headers: { Authorization: 'Token token=' + token }
+      };
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        hash.success = function(json/*, textStatus, jqXHR*/) {
+          Ember.run(null, resolve, json);
+        };
+
+        hash.error = function(jqXHR/*, textStatus, errorThrown*/) {
+          Ember.run(null, reject, self._ajaxError(jqXHR, jqXHR.responseText));
+        };
+
+        Ember.$.ajax(hash);
+      }).then(function(params) {
+        var session = self.container.lookup('torii:session');
+
+        session.set('content', { token: params.session.key });
+
+        return self._storeCurrentUser(params.session.user).then(function(currentUser) {
+          return {
+            token: params.session.key,
+            expiration: params.session.expiration,
+            currentUser: currentUser
+          };
+        });
       });
-    });
+    }
+    else {
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        reject();
+      });
+    }
   }
 });
