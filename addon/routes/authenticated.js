@@ -16,6 +16,20 @@ var AuthenticatedRoute = Ember.Route.extend({
     else {
       return true;
     }
+  },
+
+  actions: {
+    error: function(error, transition) {
+
+      if (error && error.status === 401) {
+        var loginController = this.controllerFor('login');
+
+        loginController.set('previousTransition', transition);
+        this.transitionTo('login');
+      }
+
+      return this._super.apply(this, arguments);
+    }
   }
 });
 
