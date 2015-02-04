@@ -23,10 +23,14 @@ var AuthenticatedRoute = Ember.Route.extend({
 
       if (error && error.status === 401) {
         var loginController = this.controllerFor('login');
+        var self            = this;
 
-        this.set('session.content.isAuthenticated', false);
         loginController.set('previousTransition', transition);
-        this.transitionTo('login');
+        this.get('session').close().then(function() {
+          self.transitionTo('login');
+        }).catch(function(error) {
+          self.transitionTo('login');
+        });
       }
 
       return this._super.apply(this, arguments);
