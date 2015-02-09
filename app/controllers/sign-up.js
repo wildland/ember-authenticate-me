@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.ObjectController.extend({
   firstError: function() {
-    var errorMessage = this.get('errors.firstObject');
+    var errorMessage = this.get('model.errors.firstObject');
 
     if (errorMessage) {
       var readableAttribute = errorMessage.attribute.dasherize().replace('-', ' ');
@@ -11,31 +11,7 @@ export default Ember.ObjectController.extend({
     else {
       return null;
     }
-  }.property('errors.firstObject'),
-
-  checkPassword: function() {
-    var callback = this.get('checkPasswordCallback');
-
-    Ember.run.cancel(callback);
-
-    callback = Ember.run.later(this, function() {
-      var password = this.get('password'),
-          passwordConfirmation = this.get('passwordConfirmation'),
-          errors = this.get('errors');
-
-      errors.remove('password');
-      errors.remove('passwordConfirmation');
-
-      if (!password) {
-        errors.add('password', "Cannot be blank.");
-      }
-      if (password && password !== passwordConfirmation) {
-        errors.add('passwordConfirmation', "Passwords must match.");
-      }
-    }, 600);
-
-    this.set('checkPasswordCallback', callback);
-  }.observes('password', 'passwordConfirmation'),
+  }.property('model.errors.firstObject'),
 
   loginNewUser: function(username, password) {
     var self = this,
@@ -60,12 +36,12 @@ export default Ember.ObjectController.extend({
           self = this;
 
       if (isValid) {
-        var username = self.get('username'),
-            password = self.get('password');
+        var username = self.get('model.username'),
+            password = self.get('model.password');
 
         this.get('model').save().then(function(/* user */) {
-          self.set('password', null);
-          self.set('passwordConfirmation', null);
+          self.set('model.password', null);
+          self.set('model.passwordConfirmation', null);
 
           self.loginNewUser(username, password);
 
