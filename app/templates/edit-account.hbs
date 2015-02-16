@@ -1,0 +1,51 @@
+<div id="edit-user">
+  <h2>Edit User</h2>
+  <form {{action "save" model on="submit"}}>
+    <div class="form-group">
+      <label for="email">Email</label>
+      {{input id="email" type="text" placeholder="Email" value=email}}
+      {{#if errors.email}}
+        <div class="error">
+        {{#each errors.email}}
+            <div class="bg-danger field-error-message">{{message}}</div>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      {{input id="password" type="password" placeholder="Password" value=password}}
+      {{#if errors.password}}
+        <div class="error">
+        {{#each errors.password}}
+            <div class="bg-danger field-error-message">{{message}}</div>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="form-group">
+      <label for="password_confirmation">Password Confirmation</label>
+      {{input id="password_confirmation" type="password" placeholder="Password Confirmation" value=passwordConfirmation}}
+      {{#if model.errors.passwordConfirmation}}
+        <div class="error">
+        {{#each errors.passwordConfirmation}}
+            <div class="bg-danger field-error-message">{{message}}</div>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="form-group">
+      <label for="currentPassword">Current Password</label>
+      {{input id="currentPassword" type="password" placeholder="Current Password" value=currentPassword}}
+      {{#if errors.currentPassword}}
+        <div class="error">
+        {{#each model.errors.currentPassword}}
+            <div class="bg-danger field-error-message">{{message}}</div>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <button class="submit button" type="submit">Save</button>
+    <button class="cancel" {{action 'cancel' model}}>Cancel</button>
+  </form>
+</div>

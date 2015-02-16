@@ -5,48 +5,57 @@
       <button {{bind-attr class="network.image"}} {{action 'signInProvider' network.providerName}} />
     {{/each}}
   </div>
-  <div class="form">
-    {{input type="text" name="username" placeholder="Username" value=username}}
-    {{#if errors.username}}
-      <div class="error">
-      {{#each errors.username}}
-          <span>{{message}}</span>
-      {{/each}}
-      </div>
-    {{/if}}
+  <form {{action "signup" model on="submit"}}>
+    <div class="form-group">
+      <label for="username">Username</label>
+      {{input id="username" type="text" name="username" placeholder="Username" value=username}}
+      {{#if errors.username}}
+        <div class="error">
+        {{#each errors.username}}
+            <span>{{message}}</span>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      {{input id="email" type="text" name="email" placeholder="Email" value=email}}
+      {{#if errors.email}}
+        <div class="error">
+        {{#each errors.email}}
+            <span>{{message}}</span>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      {{input id="password" type="password" name="password" placeholder="Password" value=password}}
+      {{#if errors.password}}
+        <div class="error">
+        {{#each errors.password}}
+            <span>{{message}}</span>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="form-group">
+      <label for="password_confirmation">Password Confirmation</label>
+      {{input id="password_confirmation" type="password" name="password_confirmation" placeholder="Password Confirmation" value=passwordConfirmation}}
+      {{#if errors.passwordConfirmation}}
+        <div class="error">
+        {{#each errors.passwordConfirmation}}
+            <span>{{message}}</span>
+        {{/each}}
+        </div>
+      {{/if}}
+    </div>
 
-    {{input type="text" name="email" placeholder="Email" value=email}}
-    {{#if errors.email}}
-      <div class="error">
-      {{#each errors.email}}
-          <span>{{message}}</span>
-      {{/each}}
-      </div>
-    {{/if}}
-
-    {{input type="password" name="password" placeholder="Password" value=password}}
-    {{#if errors.password}}
-      <div class="error">
-      {{#each errors.password}}
-          <span>{{message}}</span>
-      {{/each}}
-      </div>
-    {{/if}}
-
-    {{input type="password" name="password_confirmation" placeholder="Password Confirmation" value=passwordConfirmation}}
-    {{#if errors.passwordConfirmation}}
-      <div class="error">
-      {{#each errors.passwordConfirmation}}
-          <span>{{message}}</span>
-      {{/each}}
-      </div>
-    {{/if}}
-
-    <button class="submit" {{action 'signup'}}>Continue</button>
+    <button class="submit button" type="submit">Continue</button>
     {{#if errors.messages}}
       <div class="error">
         <span>{{firstError}}</span>
       </div>
     {{/if}}
-  </div>
+  </form>
 </div>
