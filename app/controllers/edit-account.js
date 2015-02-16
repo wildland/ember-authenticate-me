@@ -4,7 +4,6 @@ export default Ember.ObjectController.extend({
   actions: {
     save: function(user) {
       var self = this;
-      debugger;
       user.save().then(function() {
         self.transitionToRoute('/');
       }, function(response){
