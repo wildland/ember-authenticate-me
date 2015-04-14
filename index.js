@@ -5,8 +5,6 @@ module.exports = {
 
   included: function(app) {
     this._super.included(app);
-
-    app.import('vendor/css/authentication.css');
   },
 
   config: function(/* environment, appConfig */) {
