@@ -17,6 +17,9 @@
   },
   "author": "",
   "license": "MIT",
+  "bundledDependencies": [
+    "ember-router-generator"
+  ],
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
     "ember-cli": "0.2.3",
