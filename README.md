@@ -8,28 +8,27 @@ This addon hooks torii up to work out of the box with the Rails gem [token-authe
 * `ember g ember-authenticate-me`
 * `ember g user`
 
-app/router.js:
-````js
+`ember g ember-authenticate-me` adds to your `app/router.js` router map:
+```js
+this.route('login');
+this.route('logout');
+this.route('sign-up');
+this.route('forgot-password');
 
-import Ember from 'ember';
-import config from './config/environment';
-import addRoutes from 'ember-authenticate-me/add-routes';
-
-var Router = Ember.Router.extend({
-  location: config.locationType
+this.route('reset-password', {
+  path: '/reset-password/:token'
 });
 
-Router.map(function() {
-  ...
-  addRoutes(this);
+this.route('edit-account', {
+  path: '/edit-account/:user_id'
 });
+```
 
-export default Router;
+### Default CSS Styling
 
-
-````
-
-## TODO:
- - [ ] Automatically inject addRoutes into the router in generator.
+To include default css styling, add the following to your ember-cli projects `Brocfile.js`:
+```js
+app.import('node_modiles/ember-authnenticate-me/vendor/css/authentication.css');
+```
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
