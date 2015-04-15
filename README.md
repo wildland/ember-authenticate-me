@@ -2,11 +2,10 @@
 
 This addon hooks torii up to work out of the box with the Rails gem [token-authenticate-me](https://github.com/inigo-llc/token_authenticate_me) and includes some default templates, routes, and controllers.
 
-## Installation
+## Installation (requires ember-cli 2.0 or greater)
 
-* `npm install --save-dev ember-authenticate-me`
-* `ember g ember-authenticate-me`
-* `ember g user`
+* `ember install ember-authenticate-me`
+* `ember generate user`
 
 `ember g ember-authenticate-me` adds to your `app/router.js` router map:
 ```js
