@@ -30,7 +30,7 @@ To include default css styling, add the following to your ember-cli projects `Br
 
 var app = new EmberApp({
   emberAuthenticateMe: {
-      importCss: true
+      importCSS: true
     },
   ...
 ]);
