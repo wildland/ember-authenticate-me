@@ -23,11 +23,17 @@ this.route('edit-account', {
 });
 ```
 
-### Default CSS Styling
+### Include Default CSS Styling
 
 To include default css styling, add the following to your ember-cli projects `Brocfile.js`:
 ```js
-app.import('node_modules/ember-authenticate-me/vendor/css/authentication.css');
+
+var app = new EmberApp({
+  emberAuthenticateMe: {
+      importCss: true
+    },
+  ...
+]);
 ```
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
