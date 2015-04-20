@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { get, set } = Ember;
+
 export default Ember.Controller.extend({
   networks: [],
   username: null,
@@ -7,41 +9,43 @@ export default Ember.Controller.extend({
 
   actions: {
     logIn: function() {
-      var self = this,
-          previousTransition = this.get('previousTransition'),
-          authenticationParams = {
-            username: this.get('username') || '',
-            password: this.get('password') || ''
-          };
+      var previousTransition = get(this, 'previousTransition');
+      var authenticationParams = {
+        username: get(this, 'username') || '',
+        password: get(this, 'password') || ''
+      };
 
-      this.set('isProcessing', true);
+      set(this, 'isProcessing', true);
 
-      this.get('session').open('traditional-authentication', authenticationParams).then(function() {
-        self.set('isProcessing', false);
+      get(this, 'session').open('traditional-authentication', authenticationParams).then(() => {
+        set(this, 'isProcessing', false);
 
         if (previousTransition) {
-          self.set('previousTransition', null);
+          set(this, 'previousTransition', null);
           previousTransition.retry();
         }
         else {
-          self.transitionToRoute('/');
+          this.transitionToRoute('/');
         }
 
-      }, function(error) {
+      }, (error) => {
         try {
           if (error.status === 0 && error.statusText === "error") {
-            self.set('error', 'Unable to authenticate user: Cannot communicate with server');
+            set(this, 'error', 'Unable to authenticate user: Cannot communicate with server');
           }
           else {
-            self.set('error', 'Unable to authenticate user: ' + JSON.parse(error.responseText).message);
+            set(this,
+              'error',
+              'Unable to authenticate user: ' + JSON.parse(error.responseText).message
+            );
           }
         }
         catch (e) {
           console.log("Authentication Error: ", e);
-          self.set('error', 'Unable to authenticate user: An unknown error has occurred');
+          set(this, 'error', 'Unable to authenticate user: An unknown error has occurred');
         }
-      }).finally(function() {
-        self.set('isProcessing', false);
+      }).finally(() => {
+        set(this, 'isProcessing', false);
       });
     }
   }

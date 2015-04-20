@@ -1,8 +1,11 @@
 import Ember from 'ember';
 
-export default Ember.ObjectController.extend({
-  firstError: function() {
-    var errorMessage = this.get('model.errors.firstObject');
+const { get, set } = Ember;
+
+export default Ember.Controller.extend({
+  firstError: Ember.computed('model.errors.firstObject', function() {
+    var model = get(this, 'model');
+    var errorMessage = get(model, 'errors.firstObject');
 
     if (errorMessage) {
       var readableAttribute = errorMessage.attribute.dasherize().replace('-', ' ');
@@ -11,44 +14,48 @@ export default Ember.ObjectController.extend({
     else {
       return null;
     }
-  }.property('model.errors.firstObject'),
+  }),
 
   loginNewUser: function(username, password) {
-    var self = this,
-        authenticationParams = {
-          username: username,
-          password: password
-        };
+    var previousTransition = get(this, 'previousTransition');
+    var authenticationParams = {
+      username: username,
+      password: password
+    };
 
-    this.get('session').open('traditional-authentication', authenticationParams).then(function() {
-        self.transitionTo('/');
-    }, function(error) {
-      console.log("Error authenticating new user: ", error);
+    this.get('session').open('traditional-authentication', authenticationParams).then(() => {
+        if (previousTransition) {
+          set(this, 'previousTransition', null);
+          previousTransition.retry();
+        }
+        else {
+          this.transitionToRoute('/');
+        }
+    }, (error) => {
+      console.log('Error authenticating new user: ', error);
 
       // Transitioning to home will redirect to login
-      self.transitionTo('/');
+      this.transitionTo('/');
     });
   },
 
   actions: {
     signup: function() {
-      var isValid = this.get('isValid'),
-          self = this;
+      var model = get(this, 'model');
 
-      if (isValid) {
-        var username = self.get('model.username'),
-            password = self.get('model.password');
+      var username = get(model, 'username');
+      var password = get(model, 'password');
 
-        this.get('model').save().then(function(/* user */) {
-          self.set('model.password', null);
-          self.set('model.passwordConfirmation', null);
+      model.get('errors').clear();
+      model.save().then((/* user */) => {
+        set(model, 'password', null);
+        set(model, 'passwordConfirmation', null);
 
-          self.loginNewUser(username, password);
+        this.loginNewUser(username, password);
 
-        }, function(error) {
-          console.log("Error creating new user:", error);
-        });
-      }
+      }, function(error) {
+        console.log('Error creating new user: ', error);
+      });
     }
   }
 });
