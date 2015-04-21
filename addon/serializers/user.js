@@ -1,27 +1,23 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
-export default DS.ActiveModelSerializer.extend({
-  serializeAttribute: function(record, json, key/*, attribute*/) {
+const { get } = Ember;
 
-    /* skip searializing createdAt and updatedAt fields, the server sets these */
-    if (key !== "createdAt" && key !== "updatedAt") {
-      this._super.apply(this, arguments);
-    }
+export default DS.ActiveModelSerializer.extend({
+  attrs: {
+    createdAt: { serialize: false },
+    updatedAt: { serialize: false }
   },
 
-  serialize: function(record/*, options*/) {
+  serialize: function(recordSnapshot/*, options*/) {
     var json = this._super.apply(this, arguments);
-    var password = record.get('password');
-    var passwordConfirmation = record.get('passwordConfirmation');
-    var currentPassword = record.get('currentPassword');
+    var password = get(recordSnapshot.record, 'password');
+    var passwordConfirmation = get(recordSnapshot.record, 'passwordConfirmation');
+    var currentPassword = get(recordSnapshot.record, 'currentPassword');
 
     json.password = password;
     json.password_confirmation = passwordConfirmation;
     json.current_password = currentPassword;
-
-    record.set('password', null);
-    record.set('passwordConfirmation', null);
-    record.set('currentPassword', null);
 
     return json;
   }

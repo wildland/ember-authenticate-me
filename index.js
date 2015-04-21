@@ -16,8 +16,6 @@ module.exports = {
 
     var options = extend(defaultOptions, app.options.emberAuthenticateMe);
 
-    console.log(options);
-
     if (options.importCSS) {
       app.import('vendor/css/authentication.css');
     }

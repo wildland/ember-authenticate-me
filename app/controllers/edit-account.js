@@ -1,20 +1,13 @@
 import Ember from 'ember';
 
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
   actions: {
     save: function(user) {
       var self = this;
+
+      user.get('errors').clear();
       user.save().then(function() {
         self.transitionToRoute('/');
-      }, function(response){
-        var errors = response.errors;
-        var phantomAttr = ['password', 'password_confirmation', 'current_password'];
-        for(var attr in errors){
-            if(phantomAttr.indexOf(attr) > -1) {
-                user.get('errors').add(attr.camelize(), errors[attr]);
-            }
-            console.log(attr.camelize() + ': ' + errors[attr]);
-        }
       });
     },
 
