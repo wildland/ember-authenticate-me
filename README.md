@@ -37,3 +37,6 @@ var app = new EmberApp({
 ```
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+
+## Code Of Conduct
+Wildland Open Source [Code of conduct](https://github.com/wildland/code-of-conduct)
