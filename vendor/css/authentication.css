@@ -129,3 +129,9 @@
   padding-left: 12px;
   width: 40%;
 }
+
+#eam-content-wrapper {
+  background-color: #eeeeee;
+  margin: 0 auto;
+  width: 600px;
+}
