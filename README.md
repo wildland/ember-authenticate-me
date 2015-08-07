@@ -36,6 +36,24 @@ var app = new EmberApp({
 ]);
 ```
 
+### Override default login transitions
+override the `app/controllers/login.js` controller to:
+```
+import LoginController from 'ember-authenticate-me/controllers/login';
+
+export default LoginController.extend({
+  transitionRoute: /* route name here, I.E. 'foo' */
+
+  transitionToLoggedInRoute: function(sessionContent) {
+    /*
+     * Or to dynamically control the transition
+     * implement this function here and manually
+     * call `this.transitionToRoute(...);
+     */
+  }
+});
+```
+
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
 
 ## Code Of Conduct
