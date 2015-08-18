@@ -1,7 +1,13 @@
 import Ember from 'ember';
+import inject from 'ember-cli-injection/inject';
+
+var injectStore = inject('store');
+var injectTorii = inject('torii');
 
 export default Ember.Object.extend({
   sessionKey: null,
+  store: injectStore('main'),
+  session: injectTorii('session'),
 
   sessionUri: '/api/session',
 
@@ -24,11 +30,24 @@ export default Ember.Object.extend({
   },
 
   _storeCurrentUser: function(userPayload) {
-    var store = this.container.lookup('store:main');
+    var store = this.get('store');
+    var id = userPayload.id;
+    var attributes = {};
+    delete userPayload.id;
 
-    store.pushPayload('user', { user: userPayload });
+    for (var attr in userPayload) {
+      attributes[Ember.String.camelize(attr)] = userPayload[attr];
+    }
 
-    return store.find('user', userPayload.id);
+    store.push({
+      data: {
+        id: id,
+        type: 'user',
+        attributes: attributes
+      }
+    });
+
+    return Ember.RSVP.resolve(store.peekRecord('user', userPayload.id));
   },
 
   open: function(authorizaton) {
@@ -46,7 +65,7 @@ export default Ember.Object.extend({
 
       Ember.$.ajax(hash);
     }).then(function(params) {
-      var session = self.container.lookup('torii:session');
+      var session = self.get('session');
 
       session.set('content', { token: params.session.key });
 
@@ -127,7 +146,7 @@ export default Ember.Object.extend({
 
         Ember.$.ajax(hash);
       }).then(function(params) {
-        var session = self.container.lookup('torii:session');
+        var session = self.get('session');
 
         session.set('content', { token: params.session.key });
 

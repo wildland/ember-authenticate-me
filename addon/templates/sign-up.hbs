@@ -4,7 +4,7 @@
       <h2>Create Account</h2>
       <hr>
       <div class="networks">
-        {{#each network}}
+        {{#each networks as |network|}}
           <button class="{{network.image}}" {{action 'signInProvider' network.providerName}} />
         {{/each}}
       </div>

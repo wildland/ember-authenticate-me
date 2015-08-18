@@ -8,7 +8,7 @@ export default Ember.ObjectController.extend({
   passwordConfirmation: null,
   error: null,
 
-  checkPassword: function() {
+  checkPassword: Ember.observer('password', 'passwordConfirmation', function() {
     var callback = this.get('checkPasswordCallback');
 
     Ember.run.cancel(callback);
@@ -28,7 +28,7 @@ export default Ember.ObjectController.extend({
     }, 600);
 
     this.set('checkPasswordCallback', callback);
-  }.observes('password', 'passwordConfirmation'),
+  }),
 
   actions: {
     reset: function() {
