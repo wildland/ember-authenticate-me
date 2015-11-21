@@ -1,58 +1,41 @@
-<div class="eam-content-wrapper">
-  <div id="signup">
-    <h2>Create Account</h2>
-    <div class="networks">
-      {{#each network}}
-        <button {{bind-attr class="network.image"}} {{action 'signInProvider' network.providerName}} />
-      {{/each}}
+<div class="col-sm-12">
+  <div class="panel">
+    <div id="signup">
+      <h2>Create Account</h2>
+      <hr>
+      <div class="networks">
+        {{#each network}}
+          <button {{bind-attr class="network.image"}} {{action 'signInProvider' network.providerName}} />
+        {{/each}}
+      </div>
+      {{#bootstrap-form
+        model=model
+        action=(action "signup")
+        errors=model.errors.base}}
+        {{bootstrap-input
+          label="Username"
+          value=model.username
+          errors=model.errors.username}}
+        {{bootstrap-input
+          label="Email"
+          value=model.email
+          errors=model.errors.email}}
+        {{bootstrap-input
+          label="Password"
+          type="Password"
+          placeholder="Password"
+          value=model.password
+          errors=model.errors.password}}
+        {{bootstrap-input
+          label="Password Confirmation"
+          type="Password"
+          placeholder="Password"
+          value=model.passwordConfirmation
+          errors=model.errors.passwordConfirmation}}
+        <div class="save-cancel-buttons">
+          <button type="submit" class='btn btn-success' disabled={{isSaving}}>Create</button>
+        </div>
+      {{/bootstrap-form}}
     </div>
-    <form {{action "signup" model on="submit"}}>
-      <div class="form-group">
-        <label for="username">Username</label>
-        {{input id="username" type="text" name="username" placeholder="Username" value=model.username}}
-        {{#if model.errors.username}}
-          <div class="error">
-          {{#each model.errors.username as |error|}}
-              <span>{{error.message}}</span>
-          {{/each}}
-          </div>
-        {{/if}}
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        {{input id="email" type="text" name="email" placeholder="Email" value=model.email}}
-        {{#if model.errors.email}}
-          <div class="error">
-          {{#each model.errors.email as |error|}}
-              <span>{{error.message}}</span>
-          {{/each}}
-          </div>
-        {{/if}}
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        {{input id="password" type="password" name="password" placeholder="Password" value=model.password}}
-        {{#if model.errors.password}}
-          <div class="error">
-          {{#each model.errors.password as |error|}}
-              <span>{{error.message}}</span>
-          {{/each}}
-          </div>
-        {{/if}}
-      </div>
-      <div class="form-group">
-        <label for="password_confirmation">Password Confirmation</label>
-        {{input id="password_confirmation" type="password" name="password_confirmation" placeholder="Password Confirmation" value=model.passwordConfirmation}}
-        {{#if model.errors.passwordConfirmation}}
-          <div class="error">
-          {{#each model.errors.passwordConfirmation as |error|}}
-              <span>{{error.message}}</span>
-          {{/each}}
-          </div>
-        {{/if}}
-      </div>
-
-      <button class="submit button" type="submit">Continue</button>
-    </form>
   </div>
 </div>
