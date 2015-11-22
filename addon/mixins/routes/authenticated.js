@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
 export function isAuthenticated(session) {
-  var isAuthenticated = session.get('content.isAuthenticated');
+  var authenticated = session.get('content.isAuthenticated');
   var deferedAuthentication = Ember.RSVP.defer();
 
-  if (!isAuthenticated) {
+  if (!authenticated) {
     session.fetch().then((...args) => {
       deferedAuthentication.resolve(...args);
     }).catch((e) => {
@@ -39,6 +39,7 @@ export default Ember.Mixin.create({
         this.get('session').close().then(() => {
           this.transitionTo('login');
         }).catch((error) => {
+          console.log(`Error #{error}`);
           this.transitionTo('login');
         });
       }
