@@ -39,7 +39,7 @@ export default Ember.Mixin.create({
         this.get('session').close().then(() => {
           this.transitionTo('login');
         }).catch((error) => {
-          console.log(`Error #{error}`);
+          console.log(`Error ${error}`);
           this.transitionTo('login');
         });
       }

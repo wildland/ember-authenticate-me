@@ -5,7 +5,7 @@
       <hr>
       <div class="networks">
         {{#each network}}
-          <button {{bind-attr class="network.image"}} {{action 'signInProvider' network.providerName}} />
+          <button class="{{network.image}}" {{action 'signInProvider' network.providerName}} />
         {{/each}}
       </div>
       {{#bootstrap-form
