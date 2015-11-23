@@ -1,35 +1,46 @@
 import Ember from 'ember';
 
+export function isAuthenticated(session) {
+  var authenticated = session.get('content.isAuthenticated');
+  var deferedAuthentication = Ember.RSVP.defer();
+
+  if (!authenticated) {
+    session.fetch().then((...args) => {
+      deferedAuthentication.resolve(...args);
+    }).catch((e) => {
+      deferedAuthentication.reject(e);
+    });
+  } else {
+    deferedAuthentication.resolve(session);
+  }
+
+  return deferedAuthentication.promise;
+}
+
 export default Ember.Mixin.create({
   beforeModel: function(transition) {
-    var isAuthenticated = this.get('session.content.isAuthenticated');
-
-    if (!isAuthenticated) {
+    let session = this.get('session');
+    return isAuthenticated(session).catch(() => {
       console.log("No user session, transitioning to login.");
-      var loginController = this.controllerFor('login');
+      let loginController = this.controllerFor('login');
 
       loginController.set('previousTransition', transition);
       this.transitionTo('login');
-
-      return false;
-    }
-    else {
-      return true;
-    }
+    });
   },
 
   actions: {
     error: function(error, transition) {
 
       if (error && error.status === 401) {
-        var loginController = this.controllerFor('login');
-        var self            = this;
+        let loginController = this.controllerFor('login');
 
         loginController.set('previousTransition', transition);
-        this.get('session').close().then(function() {
-          self.transitionTo('login');
-        }).catch(function(error) {
-          self.transitionTo('login');
+        this.get('session').close().then(() => {
+          this.transitionTo('login');
+        }).catch((error) => {
+          console.log(`Error ${error}`);
+          this.transitionTo('login');
         });
       }
 
