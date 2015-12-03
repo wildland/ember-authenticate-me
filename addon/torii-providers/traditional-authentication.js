@@ -3,9 +3,9 @@ import Ember from 'ember';
 export default Ember.Object.extend({
   name: 'traditional-authentication',
 
-  configNamespace: function(){
+  configNamespace: Ember.computed('name', function(){
     return 'providers.' + this.get('name');
-  }.property('name'),
+  }),
 
   open: function(authenticationParams) {
     return new Ember.RSVP.Promise(function(resolve/*, reject*/) {

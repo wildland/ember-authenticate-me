@@ -2,8 +2,8 @@
   <div id="login">
     <h2>Log In</h2>
     <div class="networks">
-      {{#each network in networks}}
-        <button {{bind-attr class="network.image"}} {{action 'signInProvider' network.providerName}} />
+      {{#each networks as |network|}}
+        <button {{action 'signInProvider' network.providerName}}>network.providerName</button>
       {{/each}}
     </div>
     <form {{action "logIn" model on="submit"}}>
