@@ -13,7 +13,7 @@ export default DS.Model.extend({
   passwordConfirmation: null,
   currentPassword: null,
 
-  passwordUpdate: Ember.computed('password', function() {
+  passwordUpdate: Ember.observer('password', function() {
     var errors = this.get('errors');
 
     if (errors) {
@@ -21,7 +21,7 @@ export default DS.Model.extend({
     }
   }),
 
-  passwordConfirmationUpdate: Ember.computed('passwordConfirmation', function() {
+  passwordConfirmationUpdate: Ember.observer('passwordConfirmation', function() {
     var errors = this.get('errors');
 
     if (errors) {
@@ -29,7 +29,7 @@ export default DS.Model.extend({
     }
   }),
 
-  currentPasswordUpdate: Ember.computed('currentPassword', function() {
+  currentPasswordUpdate: Ember.observer('currentPassword', function() {
     var errors = this.get('errors');
 
     if (errors) {
