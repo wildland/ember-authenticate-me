@@ -31,23 +31,15 @@ export default Ember.Object.extend({
 
   _storeCurrentUser: function(userPayload) {
     var store = this.get('store');
-    var id = userPayload.id;
-    var attributes = {};
-    delete userPayload.id;
 
-    for (var attr in userPayload) {
-      attributes[Ember.String.camelize(attr)] = userPayload[attr];
-    }
+    /*******
+     * Written for ember 1.13 and above support.
+     * For ember-data 2.0 only, this should change to:
+     *  const user = store.push(store.normalize('user', userPayload));
+    ********/
+    const user = store.push('user', store.normalize('user', userPayload));
 
-    store.push({
-      data: {
-        id: id,
-        type: 'user',
-        attributes: attributes
-      }
-    });
-
-    return Ember.RSVP.resolve(store.peekRecord('user', userPayload.id));
+    return Ember.RSVP.resolve(user);
   },
 
   open: function(authorizaton) {

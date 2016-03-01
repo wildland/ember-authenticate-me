@@ -2,24 +2,24 @@ import Ember from 'ember';
 
 export function isAuthenticated(session) {
   var authenticated = session.get('content.isAuthenticated');
-  var deferedAuthentication = Ember.RSVP.defer();
 
-  if (!authenticated) {
-    session.fetch().then((...args) => {
-      deferedAuthentication.resolve(...args);
-    }).catch((e) => {
-      deferedAuthentication.reject(e);
-    });
-  } else {
-    deferedAuthentication.resolve(session);
-  }
-
-  return deferedAuthentication.promise;
+  return new Ember.RSVP.Promise(function(resolve, reject) {
+    if (!authenticated) {
+      session.fetch().then((...args) => {
+        resolve(...args);
+      }).catch((e) => {
+        reject(e);
+      });
+    } else {
+      resolve(session);
+    }
+  });
 }
 
 export default Ember.Mixin.create({
   beforeModel: function(transition) {
     let session = this.get('session');
+
     return isAuthenticated(session).catch(() => {
       console.log("No user session, transitioning to login.");
       let loginController = this.controllerFor('login');
