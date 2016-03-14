@@ -29,10 +29,10 @@
           errors=model.errors.passwordConfirmation}}
         {{bootstrap-input
           label="Current Password"
-          type="Current Password"
+          type="Password"
           placeholder="Current Password"
           value=model.currentPassword
-          errors=model.errors.currentPassword}}
+          errors=model.errors.current_password}}
         <div class="save-cancel-buttons">
           <button {{action "cancel" model}} class='btn btn-cancel' disabled={{isSaving}}>Cancel</button>
           <button type="submit" class='btn btn-success' disabled={{isSaving}}>Save</button>
