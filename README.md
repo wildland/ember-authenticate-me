@@ -4,7 +4,7 @@ This addon hooks [Torii](https://github.com/Vestorly/torii) up to work out of th
 
 ## Installation (requires ember-cli 2.0 or greater)
 
-In your app's root Ember directory, run:
+In your app's root Ember directory (typically `app-ember`), run:
 
 * `ember install ember-authenticate-me`
 * `ember generate user`
