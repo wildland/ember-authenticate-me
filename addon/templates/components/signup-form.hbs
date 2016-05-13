@@ -1,0 +1,25 @@
+<form class="signup-form-component" {{action 'save' user on="submit"}}>
+  {{user-account-inputs user=user}}
+  {{bootstrap-input
+    label="Password"
+    type="Password"
+    placeholder="Password"
+    value=user.password
+    errors=user.errors.password}}
+  {{bootstrap-input
+    label="Password Confirmation"
+    type="Password"
+    placeholder="Password"
+    value=user.passwordConfirmation
+    errors=user.errors.password_confirmation}}
+  <div class="save-cancel-buttons">
+    <button type="submit" class='btn btn-success' disabled={{_isSaving}}>Create</button>
+  </div>
+  {{#if user.errors.base}}
+    <div class="alert alert-danger" role="alert">
+      {{#each user.errors.base as |error|}}
+          <span>{{error.message}}</span>
+      {{/each}}
+    </div>
+  {{/if}}
+</form>

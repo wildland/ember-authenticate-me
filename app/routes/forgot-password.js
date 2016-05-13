@@ -1,3 +1,3 @@
-import Ember from 'ember';
+import ForgotPasswordRoute from 'ember-authenticate-me/routes/forgot-password';
 
-export default Ember.Route.extend({});
+export default ForgotPasswordRoute;

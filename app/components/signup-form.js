@@ -1,0 +1,1 @@
+export { default } from 'ember-authenticate-me/components/signup-form';

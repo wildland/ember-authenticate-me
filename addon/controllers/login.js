@@ -1,12 +1,13 @@
 import Ember from 'ember';
 
-const { get, set } = Ember;
+const { get, set, computed } = Ember;
 
 export default Ember.Controller.extend({
   networks: [],
   username: null,
   password: null,
   transitionRoute: 'index',
+  alwaysSkipPreviousTransition: false,
 
   transitionToPrevious: function() {
     var previousTransition = this.get('previousTransition');
@@ -16,51 +17,58 @@ export default Ember.Controller.extend({
   },
 
   transitionToLoggedInRoute: function() {
-    var transitionRoute = this.get('transitionRoute');
+    const transitionRoute = this.get('transitionRoute');
 
     this.transitionToRoute(transitionRoute);
   },
 
+  isTransitioningToPrevious: computed(
+    'previousTransition',
+    'alwaysSkipPreviousTransition',
+    function() {
+      const previousTransition = get(this, 'previousTransition');
+      const usePreviousTransition = !get(this, 'alwaysSkipPreviousTransition');
+
+      return previousTransition &&
+          usePreviousTransition &&
+          previousTransition.targetName !== 'logout' &&
+          previousTransition.targetName !== 'login';
+    }
+  ),
+
   actions: {
-    logIn: function() {
-      var previousTransition = get(this, 'previousTransition');
-      var authenticationParams = {
-        username: get(this, 'username') || '',
-        password: get(this, 'password') || ''
+    login: function(username, password) {
+      const usePreviousTransition = this.get('usePreviousTransition');
+
+      const authenticationParams = {
+        username: username || '',
+        password: password || ''
       };
 
-      set(this, 'isProcessing', true);
-
-      get(this, 'session').open('traditional-authentication', authenticationParams)
-          .then((sessionContent) => {
-        set(this, 'isProcessing', false);
-
-        if (previousTransition && previousTransition.targetName !== 'logout' &&
-            previousTransition.targetName !== 'login') {
+      return get(this, 'session').open(
+        'traditional-authentication',
+        authenticationParams
+      ).then((sessionContent) => {
+        if (usePreviousTransition) {
           this.transitionToPrevious(sessionContent);
-        }
-        else {
+        } else {
           this.transitionToLoggedInRoute(sessionContent);
         }
-
-      }, (error) => {
-        try {
-          if (error.status === 0 && error.statusText === 'error') {
-            set(this, 'error', 'Unable to authenticate user: Cannot communicate with server');
-          }
-          else {
-            set(this,
-              'error',
-              'Unable to authenticate user: ' + JSON.parse(error.responseText).message
-            );
-          }
+      }).catch((error) => {
+        if (error && error.status === 0 && error.statusText === 'error') {
+          set(this, 'error', 'Unable to authenticate user: Cannot communicate with server');
         }
-        catch (e) {
-          console.log('Authentication Error: ', e);
+        else if(error && error.responseText) {
+          set(this,
+            'error',
+            'Unable to authenticate user: ' + JSON.parse(error.responseText).message
+          );
+        } else {
+          Ember.Logger.error('Authentication Error: ', error);
           set(this, 'error', 'Unable to authenticate user: An unknown error has occurred');
         }
-      }).finally(() => {
-        set(this, 'isProcessing', false);
+
+        throw error; /* bubble error for others to view */
       });
     }
   }

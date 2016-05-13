@@ -1,7 +1,3 @@
-import Ember from 'ember';
+import UserController from 'ember-authenticate-me/controllers/user';
 
-export default Ember.Controller.extend({
-  currentPassword: null,
-  newPassword: null,
-  newPasswordConfirmation: null
-});
+export default UserController;

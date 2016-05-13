@@ -3,41 +3,7 @@
     <div id="edit-account">
       <h2>Edit User</h2>
       <hr>
-      {{#bootstrap-form
-        model=model
-        action=(action "save")
-        errors=model.errors.base}}
-        {{bootstrap-input
-          label="Username"
-          value=model.username
-          errors=model.errors.username}}
-        {{bootstrap-input
-          label="Email"
-          value=model.email
-          errors=model.errors.email}}
-        {{bootstrap-input
-          label="Password"
-          type="Password"
-          placeholder="Password"
-          value=model.password
-          errors=model.errors.password}}
-        {{bootstrap-input
-          label="Password Confirmation"
-          type="Password"
-          placeholder="Password"
-          value=model.passwordConfirmation
-          errors=model.errors.password_confirmation}}
-        {{bootstrap-input
-          label="Current Password"
-          type="Password"
-          placeholder="Current Password"
-          value=model.currentPassword
-          errors=model.errors.current_password}}
-        <div class="save-cancel-buttons">
-          <button {{action "cancel" model}} class='btn btn-cancel' disabled={{isSaving}}>Cancel</button>
-          <button type="submit" class='btn btn-success' disabled={{isSaving}}>Save</button>
-        </div>
-      {{/bootstrap-form}}
+      {{edit-account-form user=model save=(action 'save') cancel=(action 'cancel')}}
     </div>
   </div>
 </div>

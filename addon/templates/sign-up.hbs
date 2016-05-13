@@ -8,34 +8,7 @@
           <button class="{{network.image}}" {{action 'signInProvider' network.providerName}} />
         {{/each}}
       </div>
-      {{#bootstrap-form
-        model=model
-        action=(action "signup")
-        errors=model.errors.base}}
-        {{bootstrap-input
-          label="Username"
-          value=model.username
-          errors=model.errors.username}}
-        {{bootstrap-input
-          label="Email"
-          value=model.email
-          errors=model.errors.email}}
-        {{bootstrap-input
-          label="Password"
-          type="Password"
-          placeholder="Password"
-          value=model.password
-          errors=model.errors.password}}
-        {{bootstrap-input
-          label="Password Confirmation"
-          type="Password"
-          placeholder="Password"
-          value=model.passwordConfirmation
-          errors=model.errors.passwordConfirmation}}
-        <div class="save-cancel-buttons">
-          <button type="submit" class='btn btn-success' disabled={{isSaving}}>Create</button>
-        </div>
-      {{/bootstrap-form}}
+      {{signup-form user=model signup=(action 'signup')}}
     </div>
   </div>
 </div>
