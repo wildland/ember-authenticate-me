@@ -1,0 +1,10 @@
+<form class="login-form-component" {{action 'login' username password on="submit"}}>
+  {{input type="text" name="username" placeholder="Username" value=username}}
+  {{input type="password" name="password" placeholder="Password" value=password}}
+  {{#if _isProcessing}}<button type="submit" disabled=true>Loading...</button>{{else}}<button type="submit">Log In</button>{{/if}}
+  {{#if error}}
+    <div class="error">
+      <span>{{error}}</span>
+    </div>
+  {{/if}}
+</form>

@@ -6,11 +6,13 @@ export default Ember.Route.extend(AuthenticatedMixin, {
     this._super(...arguments);
 
     this.get('session').close().then(() => {
-      this.store.unloadAll();
+      /* clear all data from the store as it could contain user specific information */
       this.transitionTo('login');
     }).catch(function(error) {
-      console.log("Error logging out: ", error);
+      Ember.Logger.error("Error logging out: ", error);
       this.transitionTo('login');
+    }).finally(() => {
+      this.store.unloadAll();
     });
   }
 });

@@ -6,19 +6,10 @@
         <button {{action 'signInProvider' network.providerName}}>network.providerName</button>
       {{/each}}
     </div>
-    <form {{action "logIn" model on="submit"}}>
-      {{input type="text" name="username" placeholder="Username" value=username}}
-      {{input type="password" name="password" placeholder="Password" value=password}}
-      {{#if isProcessing}}<button type="submit" disabled=true>Loading...</button>{{else}}<button type="submit">Log In</button>{{/if}}
-      {{#if error}}
-        <div class="error">
-          <span>{{error}}</span>
-        </div>
-      {{/if}}
-      <div class="help">
-        {{#link-to 'forgot-password' class="forgot-password"}}Forget Password?{{/link-to}}
-        {{#link-to 'sign-up' class="signup"}}Sign Up{{/link-to}}
-      </div>
-    </form>
+  </div>
+  {{login-form username=username password=password login=(action 'login')}}
+  <div class="help">
+    {{#link-to 'forgot-password' class="forgot-password"}}Forget Password?{{/link-to}}
+    {{#link-to 'sign-up' class="signup"}}Sign Up{{/link-to}}
   </div>
 </div>

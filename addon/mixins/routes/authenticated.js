@@ -17,12 +17,14 @@ export function isAuthenticated(session) {
 }
 
 export default Ember.Mixin.create({
+  loginRoute: 'login',
+
   beforeModel: function(transition) {
-    let session = this.get('session');
+    const session = this.get('session');
 
     return isAuthenticated(session).catch(() => {
-      console.log("No user session, transitioning to login.");
-      let loginController = this.controllerFor('login');
+      Ember.Logger.info("No user session, transitioning to login.");
+      const loginController = this.controllerFor('login');
 
       loginController.set('previousTransition', transition);
       this.transitionTo('login');
@@ -33,14 +35,14 @@ export default Ember.Mixin.create({
     error: function(error, transition) {
 
       if (error && error.status === 401) {
-        let loginController = this.controllerFor('login');
+        const loginController = this.controllerFor('login');
 
         loginController.set('previousTransition', transition);
         this.get('session').close().then(() => {
-          this.transitionTo('login');
+          this.transitionTo(this.get('loginRoute'));
         }).catch((error) => {
-          console.log(`Error ${error}`);
-          this.transitionTo('login');
+          Ember.Logger.error(`Error ${error}`);
+          this.transitionTo(this.get('loginRoute'));
         });
       }
 

@@ -1,7 +1,3 @@
-import AuthenticatedRoute from 'ember-authenticate-me/routes/authenticated';
+import EditAccountRoute from 'ember-authenticate-me/routes/edit-account';
 
-export default AuthenticatedRoute.extend({
-  model: function(params) {
-    return this.get('store').find('user', params.user_id);
-  }
-});
+export default EditAccountRoute;

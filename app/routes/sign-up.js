@@ -1,9 +1,3 @@
-import Ember from 'ember';
+import SignUpRoute from 'ember-authenticate-me/routes/sign-up';
 
-export default Ember.Route.extend({
-  model: function() {
-    var user = this.get('store').createRecord('user');
-
-    return user;
-  }
-});
+export default SignUpRoute;

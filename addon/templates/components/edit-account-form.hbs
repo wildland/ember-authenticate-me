@@ -1,0 +1,32 @@
+<form class="edit-account-form-component" {{action 'save' user on="submit"}}>
+  {{user-account-inputs user=user}}
+  {{bootstrap-input
+    label="Password"
+    type="Password"
+    placeholder="Password"
+    value=user.password
+    errors=user.errors.password}}
+  {{bootstrap-input
+    label="Password Confirmation"
+    type="Password"
+    placeholder="Password"
+    value=user.passwordConfirmation
+    errors=user.errors.password_confirmation}}
+  {{bootstrap-input
+    label="Current Password"
+    type="Password"
+    placeholder="Current Password"
+    value=user.currentPassword
+    errors=user.errors.current_password}}
+  <div class="save-cancel-buttons">
+    <button {{action "cancel" user}} class='btn btn-cancel' disabled={{_isSaving}}>Cancel</button>
+    <button type="submit" class='btn btn-success' disabled={{_isSaving}}>Save</button>
+  </div>
+  {{#if user.errors.base}}
+    <div class="alert alert-danger" role="alert">
+      {{#each user.errors.base as |error|}}
+          <span>{{error.message}}</span>
+      {{/each}}
+    </div>
+  {{/if}}
+</form>

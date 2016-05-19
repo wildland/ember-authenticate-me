@@ -11,7 +11,7 @@ var defaultOptions = {
 module.exports = {
   name: 'ember-authenticate-me',
 
-  included: function(app, parentAddon ) {
+  included(app/*, parentAddon*/ ) {
     this._super.included(app);
 
     var options = extend(defaultOptions, app.options.emberAuthenticateMe);
@@ -21,7 +21,7 @@ module.exports = {
     }
   },
 
-  config: function(/* environment, appConfig */) {
+  config(/* environment, appConfig */) {
     return {
       apiNamespace: 'api/v1',
 
@@ -35,5 +35,9 @@ module.exports = {
         sessionServiceName: 'session'
       }
     };
+  },
+
+  isDevelopingAddon() {
+    return true;
   }
 };

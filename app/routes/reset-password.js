@@ -1,9 +1,3 @@
-import Ember from 'ember';
+import ResetPasswordRoute from 'ember-authenticate-me/routes/reset-password';
 
-export default Ember.Route.extend({
-  model: function(params) {
-    return {
-      token: params.token
-    };
-  }
-});
+export default ResetPasswordRoute;
