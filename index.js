@@ -11,7 +11,7 @@ var defaultOptions = {
 module.exports = {
   name: 'ember-authenticate-me',
 
-  included(app, parentAddon ) {
+  included(app/*, parentAddon*/ ) {
     this._super.included(app);
 
     var options = extend(defaultOptions, app.options.emberAuthenticateMe);

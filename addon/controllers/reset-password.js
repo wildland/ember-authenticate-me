@@ -34,9 +34,10 @@ export default Ember.ObjectController.extend({
   actions: {
     reset: function() {
       const emberAuthenticateMeConfig = getConfig();
-      const PASSWORD_RESET_URI = emberAuthenticateMeConfig.passwordResetUri || '/api/password_resets';
       const error = this.get('error');
       const self = this;
+      const PASSWORD_RESET_URI = emberAuthenticateMeConfig.passwordResetUri ||
+        '/api/password_resets';
 
       if (!error) {
         return Ember.$.ajax({

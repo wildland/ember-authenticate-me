@@ -7,8 +7,9 @@ export default Ember.Controller.extend({
   actions: {
     forgotPassword: function() {
       const emberAuthenticateMeConfig = getConfig();
-      const PASSWORD_RESET_URI = emberAuthenticateMeConfig.passwordResetUri || '/api/password_resets';
       const self = this;
+      const PASSWORD_RESET_URI = emberAuthenticateMeConfig.passwordResetUri ||
+        '/api/password_resets';
 
       Ember.$.ajax({
         type: "POST",
