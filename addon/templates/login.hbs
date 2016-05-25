@@ -6,10 +6,10 @@
         <button {{action 'signInProvider' network.providerName}}>network.providerName</button>
       {{/each}}
     </div>
-  </div>
-  {{login-form username=username password=password login=(action 'login')}}
-  <div class="help">
-    {{#link-to 'forgot-password' class="forgot-password"}}Forget Password?{{/link-to}}
-    {{#link-to 'sign-up' class="signup"}}Sign Up{{/link-to}}
+    {{login-form username=username password=password login=(action 'login')}}
+    <div class="help">
+      {{#link-to 'forgot-password' class="forgot-password"}}Forget Password?{{/link-to}}
+      {{#link-to 'sign-up' class="signup"}}Sign Up{{/link-to}}
+    </div>
   </div>
 </div>
