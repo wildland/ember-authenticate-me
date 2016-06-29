@@ -1,3 +1,3 @@
-import resetPassword from 'ember-authenticate-me/models/reset-password';
+import ResetPassword from 'ember-authenticate-me/models/reset-password';
 
-export default resetPassword;
+export default ResetPassword;

@@ -9,8 +9,6 @@ export default Ember.Object.extend({
   store: injectStore('main'),
   session: injectTorii('session'),
 
-  sessionUri: '/api/session',
-
   _ajaxOptions: function(authorizaton) {
     return {
       url: this.get('sessionUri'),

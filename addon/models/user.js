@@ -1,19 +1,22 @@
-import Ember from 'ember';
 import DS from 'ember-data';
+import Ember from 'ember';
 
-export default DS.Model.extend({
-  username: DS.attr('string'),
-  email: DS.attr('string'),
+const { Model, attr } = DS;
+const { observer } = Ember;
 
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
+export default Model.extend({
+  username: attr('string'),
+  email: attr('string'),
+
+  createdAt: attr('date'),
+  updatedAt: attr('date'),
 
   /* not persisted in the local store, only sent to server */
   password: null,
   passwordConfirmation: null,
   currentPassword: null,
 
-  passwordUpdate: Ember.observer('password', function() {
+  passwordUpdate: observer('password', function() {
     var errors = this.get('errors');
 
     if (errors) {
@@ -21,7 +24,7 @@ export default DS.Model.extend({
     }
   }),
 
-  passwordConfirmationUpdate: Ember.observer('passwordConfirmation', function() {
+  passwordConfirmationUpdate: observer('passwordConfirmation', function() {
     var errors = this.get('errors');
 
     if (errors) {
@@ -29,11 +32,11 @@ export default DS.Model.extend({
     }
   }),
 
-  currentPasswordUpdate: Ember.observer('currentPassword', function() {
+  currentPasswordUpdate: observer('currentPassword', function() {
     var errors = this.get('errors');
 
     if (errors) {
       errors.remove('currentPassword');
     }
-  })
+  }),
 });
