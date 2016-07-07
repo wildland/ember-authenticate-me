@@ -25,7 +25,7 @@ export default DS.ActiveModelAdapter.extend({
   }),
 
   handleResponse: function(status, headers, payload) {
-    if(status == 401) {
+    if (status == 401) {
       return this.get('session').close().finally(() => {
         this.get('router').transitionTo('login');
         this.store.unloadAll();
