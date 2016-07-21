@@ -22,7 +22,7 @@ export default Ember.Controller.extend({
     this.transitionToRoute(transitionRoute);
   },
 
-  isTransitioningToPrevious: computed(
+  usePreviousTransition: computed(
     'previousTransition',
     'alwaysSkipPreviousTransition',
     function() {
