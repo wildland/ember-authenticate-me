@@ -26,8 +26,9 @@ module.exports = {
       apiNamespace: 'api/v1',
 
       emberAuthenticateMe: {
-        sessionUri: '/api/session',
-        passwordResetUri: '/api/password_resets'
+        sessionUri: '/token_authenticate_me/api/v1/session',
+        passwordResetUri: '/token_authenticate_me/api/v1/password_resets',
+        inviteUri: '/token_authenticate_me/api/v1/invites'
       },
 
       torii: {
