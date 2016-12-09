@@ -1,15 +1,22 @@
 import Ember from 'ember';
-import inject from 'ember-cli-injection/inject';
+import cliInject from 'ember-cli-injection/inject';
 
-var injectStore = inject('store');
-var injectTorii = inject('torii');
+const injectStore = cliInject('store');
+
+const { assert, inject } = Ember;
 
 export default Ember.Object.extend({
-  sessionKey: null,
   store: injectStore('main'),
-  session: injectTorii('session'),
+  session: inject.service('session'),
 
-  _ajaxOptions: function(authorizaton) {
+  /*
+   * Injected into the app through the application torii-adapter.
+   * See `app/torii-adapters/application.js` for details
+   */
+  sessionUri: null,
+  sessionKey: null,
+
+  _ajaxOptions(authorizaton) {
     return {
       url: this.get('sessionUri'),
       data: JSON.stringify(authorizaton),
@@ -19,7 +26,7 @@ export default Ember.Object.extend({
     };
   },
 
-  _ajaxError: function(jqXHR/*, responseText*/) {
+  _ajaxError(jqXHR/*, responseText*/) {
     if (jqXHR && typeof jqXHR === 'object') {
       jqXHR.then = null;
     }
@@ -27,49 +34,52 @@ export default Ember.Object.extend({
     return jqXHR;
   },
 
-  _storeCurrentUser: function(userPayload) {
-    var store = this.get('store');
+  _storeCurrentUser(userPayload) {
+    const store = this.get('store');
 
     /*******
      * Written for ember 1.13 and above support.
      * For ember-data 2.0 only, this should change to:
      *  const user = store.push(store.normalize('user', userPayload));
     ********/
-    const user = store.push('user', store.normalize('user', userPayload));
+    const user = store.push('token-authenticate-me/user', store.normalize('token-authenticate-me/user', userPayload));
 
     return Ember.RSVP.resolve(user);
   },
 
-  open: function(authorizaton) {
-    var self = this,
-        hash = this._ajaxOptions(authorizaton);
+  open(authorizaton) {
+    const hash = this._ajaxOptions(authorizaton);
 
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      hash.success = function(json/*, textStatus, jqXHR*/) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      hash.success = (json/*, textStatus, jqXHR*/) => {
         Ember.run(null, resolve, json);
       };
 
-      hash.error = function(jqXHR/*, textStatus, errorThrown*/) {
-        Ember.run(null, reject, self._ajaxError(jqXHR, jqXHR.responseText));
+      hash.error = (jqXHR/*, textStatus, errorThrown*/) => {
+        Ember.run(null, reject, this._ajaxError(jqXHR, jqXHR.responseText));
       };
 
       Ember.$.ajax(hash);
-    }).then(function(params) {
-      var session = self.get('session');
+    }).then((params) => {
+      const session = this.get('session');
+      const sessionKey = this.get('sessionKey');
+      const sessionPayload = params[sessionKey];
 
-      session.set('content', { token: params.session.key });
+      assert(`Unable to find session key ${sessionKey} in payload ${params}`, sessionPayload);
+
+      session.set('content', { token: sessionPayload.key });
 
       if (window.localStorage) {
-        window.localStorage.setItem('eam-token', params.session.key);
+        window.localStorage.setItem('eam-token', sessionPayload.key);
       }
       else {
-        self.set('token', params.session.key);
+        this.set('token', sessionPayload.key);
       }
 
-      return self._storeCurrentUser(params.session.user).then(function(currentUser) {
+      return this._storeCurrentUser(sessionPayload.user).then((currentUser) => {
         return {
-          token: params.session.key,
-          expiration: params.session.expiration,
+          token: sessionPayload.key,
+          expiration: sessionPayload.expiration,
           currentUser: currentUser
         };
       });
@@ -79,27 +89,26 @@ export default Ember.Object.extend({
   /**
   * This method destroys/unauthenticates the existing session with the server.
   **/
-  close: function() {
-    var token = null,
-        self  = this;
+  close() {
+    let token = null;
 
     if (window.localStorage) {
       token = window.localStorage.getItem('eam-token');
     }
     else {
-      token = self.get('token');
+      token = this.get('token');
     }
 
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
-        url: self.get('sessionUri'),
+        url: this.get('sessionUri'),
         type: 'DELETE',
         dataType: 'json',
         contentType: 'application/json',
-        headers: { Authorization: 'Token token=' + token },
+        headers: { Authorization: `Token token=${token}` },
         success: Ember.run.bind(null, resolve),
         error: Ember.run.bind(null, reject)
-      }).then(function(data) {
+      }).then((data) => {
         return data;
       });
     });
@@ -109,48 +118,52 @@ export default Ember.Object.extend({
   * This method is for checking to see if there is a session saved somewhere in memory
   * and then verifying that it is valid.
   **/
-  fetch: function() {
-    var self  = this,
-        token = null;
+  fetch() {
+    let token = null;
 
     if (window.localStorage) {
       token = window.localStorage.getItem('eam-token');
     }
 
     if (token) {
-      var hash = {
+      const hash = {
         url: this.get('sessionUri'),
         type: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-          headers: { Authorization: 'Token token=' + token }
+        headers: { Authorization: `Token token=${token}` }
       };
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        hash.success = function(json/*, textStatus, jqXHR*/) {
+
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        hash.success = (json/*, textStatus, jqXHR*/) => {
           Ember.run(null, resolve, json);
         };
 
-        hash.error = function(jqXHR/*, textStatus, errorThrown*/) {
-          Ember.run(null, reject, self._ajaxError(jqXHR, jqXHR.responseText));
+        hash.error = (jqXHR/*, textStatus, errorThrown*/) => {
+          Ember.run(null, reject, this._ajaxError(jqXHR, jqXHR.responseText));
         };
 
         Ember.$.ajax(hash);
-      }).then(function(params) {
-        var session = self.get('session');
+      }).then((params) => {
+        const sessionKey = this.get('sessionKey');
+        const session = this.get('session');
+        const sessionPayload = params[sessionKey];
 
-        session.set('content', { token: params.session.key });
+        assert(`Unable to find session key ${sessionKey} in payload ${params}`, sessionPayload);
 
-        return self._storeCurrentUser(params.session.user).then(function(currentUser) {
+        session.set('content', { token: sessionPayload.key });
+
+        return this._storeCurrentUser(sessionPayload.user).then(function(currentUser) {
           return {
-            token: params.session.key,
-            expiration: params.session.expiration,
+            token: sessionPayload.key,
+            expiration: sessionPayload.expiration,
             currentUser: currentUser
           };
         });
       });
     }
     else {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new Ember.RSVP.Promise((resolve, reject) => {
         reject();
       });
     }
