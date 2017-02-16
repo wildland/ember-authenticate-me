@@ -42,7 +42,10 @@ export default Ember.Object.extend({
      * For ember-data 2.0 only, this should change to:
      *  const user = store.push(store.normalize('user', userPayload));
     ********/
-    const user = store.push('token-authenticate-me/user', store.normalize('token-authenticate-me/user', userPayload));
+    const user = store.push(
+      'token-authenticate-me/user',
+      store.normalize('token-authenticate-me/user', userPayload)
+    );
 
     return Ember.RSVP.resolve(user);
   },
