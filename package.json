@@ -18,6 +18,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "active-model-adapter": "2.1.1",
     "broccoli-asset-rev": "^2.0.2",
     "ember-cli": "0.2.7",
     "ember-cli-app-version": "0.3.3",
@@ -29,9 +30,9 @@
     "ember-cli-qunit": "0.3.13",
     "ember-cli-uglify": "^1.0.1",
     "ember-data": "1.13.9",
+    "ember-disable-prototype-extensions": "^1.0.0",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.2",
-    "ember-disable-prototype-extensions": "^1.0.0",
     "ember-try": "0.0.6",
     "ember-watson": "^0.6.2"
   },
@@ -39,6 +40,7 @@
     "ember-addon"
   ],
   "dependencies": {
+    "active-model-adapter": "2.1.1",
     "ember-bootstrap-controls": "git+https://github.com/wildland/ember-bootstrap-controls#v0.0.8",
     "ember-cli-babel": "^5.0.0",
     "ember-cli-htmlbars": "0.7.6",

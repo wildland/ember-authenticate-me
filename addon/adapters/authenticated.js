@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import DS from 'ember-data';
 import inject from 'ember-cli-injection/inject';
+import ActiveModelAdapter from 'active-model-adapter';
 
 var injectStore = inject('store');
 var injectTorii = inject('torii');
 var injectRouter = inject('router');
 
-export default DS.ActiveModelAdapter.extend({
+export default ActiveModelAdapter.extend({
   session: injectTorii('session'),
   router: injectRouter('main'),
   store: injectStore('main'),
