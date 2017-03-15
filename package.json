@@ -41,7 +41,7 @@
   ],
   "dependencies": {
     "active-model-adapter": "2.1.1",
-    "ember-bootstrap-controls": "git+https://github.com/wildland/ember-bootstrap-controls#v0.0.8",
+    "ember-bootstrap-controls": "git+https://github.com/wildland/ember-bootstrap-controls#ember-cli-updates",
     "ember-cli-babel": "^5.0.0",
     "ember-cli-htmlbars": "0.7.6",
     "ember-cli-injection": "^1.0.0",
