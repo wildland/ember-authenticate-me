@@ -1,12 +1,9 @@
 import Ember from 'ember';
-import cliInject from 'ember-cli-injection/inject';
-
-const injectStore = cliInject('store');
 
 const { assert, inject } = Ember;
 
 export default Ember.Object.extend({
-  store: injectStore('main'),
+  store: inject.service('store'),
   session: inject.service('session'),
 
   /*

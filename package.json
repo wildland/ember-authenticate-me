@@ -22,6 +22,7 @@
     "ember-bootstrap-controls": "git+https://github.com/wildland/ember-bootstrap-controls#ember-cli-updates",
     "ember-cli-babel": "^5.1.7",
     "ember-cli-htmlbars": "^1.1.1",
+    "ember-cli-injection": "^1.1.1",
     "ember-router-generator": "^1.0.0",
     "torii": "^0.8.0"
   },

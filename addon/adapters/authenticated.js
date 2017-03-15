@@ -1,15 +1,10 @@
 import Ember from 'ember';
-import inject from 'ember-cli-injection/inject';
 import ActiveModelAdapter from 'active-model-adapter';
 
-var injectStore = inject('store');
-var injectTorii = inject('torii');
-var injectRouter = inject('router');
-
 export default ActiveModelAdapter.extend({
-  session: injectTorii('session'),
-  router: injectRouter('main'),
-  store: injectStore('main'),
+  session: Ember.inject.service('session'),
+  store: Ember.inject.service('store'),
+
   /* Set application authentication header */
   headers: Ember.computed('session.content.token', function() {
     var token = this.get('session.content.token');
@@ -27,7 +22,9 @@ export default ActiveModelAdapter.extend({
   handleResponse: function(status/*, headers, payload*/) {
     if (status === 401) {
       return this.get('session').close().finally(() => {
-        this.get('router').transitionTo('login');
+        const router = getContainer(this).lookup('router:main');
+
+        router.transitionTo('login');
         this.store.unloadAll();
         return this._super(...arguments);
       });
