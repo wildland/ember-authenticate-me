@@ -7,7 +7,6 @@ This addon hooks [Torii](https://github.com/Vestorly/torii) up to work out of th
 In your app's root Ember directory (typically `app-ember`), run:
 
 * `ember install ember-authenticate-me`
-* `ember generate user`
 
 `ember g ember-authenticate-me` adds to your `app/router.js` router map:
 
