@@ -22,7 +22,7 @@ export default ActiveModelAdapter.extend({
   handleResponse: function(status/*, headers, payload*/) {
     if (status === 401) {
       return this.get('session').close().finally(() => {
-        const router = getContainer(this).lookup('router:main');
+        const router = Ember.getOwner(this).lookup('router:main');
 
         router.transitionTo('login');
         this.store.unloadAll();
