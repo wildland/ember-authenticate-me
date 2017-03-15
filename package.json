@@ -18,7 +18,12 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "ember-cli-babel": "^5.1.7"
+    "active-model-adapter": "2.1.1",
+    "ember-bootstrap-controls": "git+https://github.com/wildland/ember-bootstrap-controls#ember-cli-updates",
+    "ember-cli-babel": "^5.1.7",
+    "ember-cli-htmlbars": "^1.1.1",
+    "ember-router-generator": "^1.0.0",
+    "torii": "^0.8.0"
   },
   "devDependencies": {
     "active-model-adapter": "2.1.1",
@@ -45,12 +50,6 @@
     "ember-source": "~2.11.0",
     "loader.js": "^4.0.10"
   },
-  "dependencies": {
-    "active-model-adapter": "2.1.1",
-    "ember-bootstrap-controls": "git+https://github.com/wildland/ember-bootstrap-controls#ember-cli-updates",
-    "ember-cli-htmlbars": "^1.1.1",
-    "ember-router-generator": "^1.0.0",
-    "torii": "^0.8.0"
   "engines": {
     "node": ">= 0.12.0"
   },
