@@ -28,12 +28,17 @@ module.exports = {
       emberAuthenticateMe: {
         sessionUri: '/token_authenticate_me/api/v1/session',
         passwordResetUri: '/token_authenticate_me/api/v1/password_resets',
-        inviteUri: '/token_authenticate_me/api/v1/invites'
+        inviteUri: '/token_authenticate_me/api/v1/invites',
+
+        sessionKey: 'token_authenticate_me/session'
       },
 
       torii: {
-        'traditional-authentication': {},
-        sessionServiceName: 'session'
+        sessionServiceName: 'session',
+
+        providers: {
+          'traditional-authentication': {},
+        }
       }
     };
   },
