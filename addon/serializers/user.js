@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import DS from 'ember-data';
+import { ActiveModelSerializer } from 'active-model-adapter';
 
 const { get } = Ember;
 
-export default DS.ActiveModelSerializer.extend({
+export default ActiveModelSerializer.extend({
   attrs: {
     createdAt: { serialize: false },
     updatedAt: { serialize: false }

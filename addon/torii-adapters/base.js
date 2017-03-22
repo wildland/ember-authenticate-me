@@ -1,12 +1,9 @@
 import Ember from 'ember';
-import cliInject from 'ember-cli-injection/inject';
-
-const injectStore = cliInject('store');
 
 const { assert, inject } = Ember;
 
 export default Ember.Object.extend({
-  store: injectStore('main'),
+  store: inject.service('store'),
   session: inject.service('session'),
 
   /*
@@ -42,9 +39,9 @@ export default Ember.Object.extend({
      * For ember-data 2.0 only, this should change to:
      *  const user = store.push(store.normalize('user', userPayload));
     ********/
-    const user = store.push(
+    const user = store.pushPayload(
       'token-authenticate-me/user',
-      store.normalize('token-authenticate-me/user', userPayload)
+      { ['token-authenticate-me/user']: userPayload }
     );
 
     return Ember.RSVP.resolve(user);
