@@ -2,7 +2,7 @@
 
 This addon hooks [Torii](https://github.com/Vestorly/torii) up to work out of the box with the Rails gem [token-authenticate-me](https://github.com/inigo-llc/token_authenticate_me) and includes some default templates, routes, and controllers.
 
-## Installation (requires ember-cli 2.0 or greater)
+## Installation (requires ember-cli 2.11.0 or greater and ember-cli-htmlbars 1.1.1 or greater)
 
 In your app's root Ember directory (typically `app-ember`), run:
 
