@@ -34,15 +34,7 @@ export default Ember.Object.extend({
   _storeCurrentUser(userPayload) {
     const store = this.get('store');
 
-    /*******
-     * Written for ember 1.13 and above support.
-     * For ember-data 2.0 only, this should change to:
-     *  const user = store.push(store.normalize('user', userPayload));
-    ********/
-    const user = store.pushPayload(
-      'token-authenticate-me/user',
-      { ['token-authenticate-me/user']: userPayload }
-    );
+    const user = store.push(store.normalize('token-authenticate-me/user', userPayload));
 
     return Ember.RSVP.resolve(user);
   },
