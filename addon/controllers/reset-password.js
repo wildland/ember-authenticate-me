@@ -42,7 +42,7 @@ export default Ember.Controller.extend({
       if (!error) {
         return Ember.$.ajax({
           type: "PUT",
-          url: [PASSWORD_RESET_URI, this.get('token')].join('/'),
+          url: [PASSWORD_RESET_URI, this.get('model.token')].join('/'),
 
           data: {
             password: this.get('password'),
