@@ -2,7 +2,7 @@ import Ember from 'ember';
 import getConfig from 'ember-authenticate-me/configuration';
 const { run } = Ember;
 
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
   password: null,
   passwordConfirmation: null,
   error: null,
@@ -30,6 +30,10 @@ export default Ember.ObjectController.extend({
       this.set('checkPasswordCallback', callback);
     });
   }),
+  
+  passwordResetComplete() {
+    this.transitionToRoute('/login');
+  },
 
   actions: {
     reset: function() {
@@ -42,7 +46,7 @@ export default Ember.ObjectController.extend({
       if (!error) {
         return Ember.$.ajax({
           type: "PUT",
-          url: [PASSWORD_RESET_URI, this.get('token')].join('/'),
+          url: [PASSWORD_RESET_URI, this.get('model.token')].join('/'),
 
           data: {
             password: this.get('password'),
@@ -50,7 +54,7 @@ export default Ember.ObjectController.extend({
           },
 
           success(/*data*/){
-            self.transitionTo('/login');
+            self.passwordResetComplete();
           },
 
           error(err/*, text*/) {
