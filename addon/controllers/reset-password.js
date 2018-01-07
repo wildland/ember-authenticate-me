@@ -2,7 +2,7 @@ import Ember from 'ember';
 import getConfig from 'ember-authenticate-me/configuration';
 const { run } = Ember;
 
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
   password: null,
   passwordConfirmation: null,
   error: null,
