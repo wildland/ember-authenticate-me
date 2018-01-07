@@ -30,6 +30,10 @@ export default Ember.Controller.extend({
       this.set('checkPasswordCallback', callback);
     });
   }),
+  
+  passwordResetComplete() {
+    this.transitionToRoute('/login');
+  },
 
   actions: {
     reset: function() {
@@ -50,7 +54,7 @@ export default Ember.Controller.extend({
           },
 
           success(/*data*/){
-            self.transitionTo('/login');
+            self.passwordResetComplete();
           },
 
           error(err/*, text*/) {
