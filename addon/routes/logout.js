@@ -6,7 +6,9 @@ export default Ember.Route.extend(AuthenticatedMixin, {
     this._super(...arguments);
 
     this.get('session').close().then(() => {
-      /* clear all data from the store as it could contain user specific information */
+      const sessionLifecycle = this.get('sessionLifecycle');
+
+      sessionLifecycle.userLoggedOut();
       this.transitionTo('login');
     }).catch((error) => {
       Ember.Logger.error("Error logging out: ", error);

@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   password: null,
   transitionRoute: 'index',
   alwaysSkipPreviousTransition: false,
+  sessionLifecycle: Ember.inject.service('session-lifecycle'),
 
   transitionToPrevious: function() {
     var previousTransition = this.get('previousTransition');
@@ -49,6 +50,8 @@ export default Ember.Controller.extend({
         'traditional-authentication',
         authenticationParams
       ).then((sessionContent) => {
+        const sessionLifecycle = this.get('sessionLifecycle');
+        sessionLifecycle.userLoggedIn(sessionContent);
         if (usePreviousTransition) {
           this.transitionToPrevious(sessionContent);
         } else {
