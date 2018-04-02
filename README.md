@@ -59,6 +59,25 @@ export default LoginController.extend({
 });
 ```
 
+### Watching session lifecycle events
+An example on adding user context to sentry.
+`app/instance-initializers/sentry.js`
+```js
+export function initialize(applicationInstance) {
+  const sessionLifecycle = applicationInstance.lookup('service:session-lifecycle');
+
+  sessionLifecycle.registerLoginCallback((session) => {
+    if (!Ember.isBlank(session.currentUser)) {
+      Raven.setUserContext({ email: session.currentUser.get('email'), id: session.currentUser.get('id') });
+    }
+  });
+
+  sessionLifecycle.registerLogoutCallback((session) => {
+    Raven.setUserContext();
+  });
+}
+```
+
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
 
 ---
