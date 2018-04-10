@@ -7,13 +7,17 @@ export default Ember.Service.extend({
   userLoggedIn(session) {
     const loginCallbacks = this.get('_loginCallbacks');
 
-    loginCallbacks.forEach(func => func(session));
+    Ember.run(() => {
+      loginCallbacks.forEach(func => Ember.run.next(null, () => func(session)));
+    });
   },
 
   userLoggedOut(session) {
     const logoutCallbacks = this.get('_logoutCallbacks');
 
-    logoutCallbacks.forEach(func => func(session));
+    Ember.run(() => {
+      logoutCallbacks.forEach(func => Ember.run.next(null, () => func(session)));
+    });
   },
 
   registerLoginCallback(func) {

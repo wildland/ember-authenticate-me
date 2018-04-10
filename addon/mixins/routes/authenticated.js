@@ -5,8 +5,8 @@ export function isAuthenticated(session, sessionLifecycle) {
 
   return new Ember.RSVP.Promise(function(resolve, reject) {
     if (!authenticated) {
-      session.fetch().then((sessionContent) => {
-        sessionLifecycle.userLoggedIn(sessionContent);
+      session.fetch().then(() => {
+        sessionLifecycle.userLoggedIn(session);
         resolve(...arguments);
       }).catch((e) => {
         reject(e);
