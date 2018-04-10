@@ -2,11 +2,14 @@ import Ember from 'ember';
 import { isAuthenticated } from 'ember-authenticate-me/mixins/routes/authenticated';
 
 export default Ember.Route.extend({
-  beforeModel: function(/*transition*/) {
-    let loginController = this.controllerFor('login');
-    let session = this.get('session');
+  sessionLifecycle: Ember.inject.service('session-lifecycle'),
 
-    return isAuthenticated(session).then(() => {
+  beforeModel: function(/*transition*/) {
+    const loginController = this.controllerFor('login');
+    const session = this.get('session');
+    const sessionLifecycle = this.get('sessionLifecycle');
+
+    return isAuthenticated(session, sessionLifecycle).then(() => {
       var previousTransition = loginController.get('previousTransition');
 
       if (previousTransition) {
