@@ -50,7 +50,7 @@ export default Ember.Controller.extend({
 
           data: {
             password: this.get('password'),
-            password_confirmation: this.get('password_confirmation')
+            password_confirmation: this.get('passwordConfirmation')
           },
 
           success(/*data*/){
