@@ -39,6 +39,16 @@ export default Ember.Object.extend({
     return Ember.RSVP.resolve(user);
   },
 
+  _returnSessionPayload(sessionPayload) {
+    return this._storeCurrentUser(sessionPayload.user).then(function(currentUser) {
+      return {
+        token: sessionPayload.key,
+        expiration: sessionPayload.expiration,
+        currentUser: currentUser
+      };
+    });
+  },
+
   open(authorizaton) {
     const hash = this._ajaxOptions(authorizaton);
 
@@ -145,13 +155,7 @@ export default Ember.Object.extend({
 
         session.set('content', { token: sessionPayload.key });
 
-        return this._storeCurrentUser(sessionPayload.user).then(function(currentUser) {
-          return {
-            token: sessionPayload.key,
-            expiration: sessionPayload.expiration,
-            currentUser: currentUser
-          };
-        });
+        return this._returnSessionPayload(sessionPayload);
       });
     }
     else {
@@ -159,5 +163,6 @@ export default Ember.Object.extend({
         reject();
       });
     }
-  }
+  },
+
 });
